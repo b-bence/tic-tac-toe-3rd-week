@@ -1,10 +1,14 @@
-def init_board():
+def init_board():  # Bende
     """Returns an empty 3-by-3 board (with zeros)."""
     board = []
+    for i in range(3):
+        board.append([])
+        for j in range(3):
+            board[i].append(0)
     return board
 
 
-def get_move(board, player):
+def get_move(board, player):  # Bence
     """Returns the coordinates of a valid move for player on board."""
     row, col = 0, 0
     return row, col
@@ -16,17 +20,17 @@ def get_ai_move(board, player):
     return row, col
 
 
-def mark(board, player, row, col):
+def mark(board, player, row, col):  # Bence
     """Marks the element at row & col on the board for player."""
     pass
 
 
-def has_won(board, player):
+def has_won(board, player):  # Bende
     """Returns True if player has won the game."""
     return False
 
 
-def is_full(board):
+def is_full(board): 
     """Returns True if board is full."""
     return False
 
@@ -54,7 +58,10 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
 
 
 def main_menu():
-    tictactoe_game('HUMAN-HUMAN')
+    # tictactoe_game('HUMAN-HUMAN')
+    board1 = init_board()
+    for i in board1:
+        print(*i)
 
 
 if __name__ == '__main__':
