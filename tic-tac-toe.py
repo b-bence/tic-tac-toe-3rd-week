@@ -10,7 +10,22 @@ def init_board():  # Bende
 
 def get_move(board, player):  # Bence
     """Returns the coordinates of a valid move for player on board."""
-    row, col = 0, 0
+    col, row = 0, 0
+    valid_letters = ['A', 'B', "C"]
+    next_move = False
+    while next_move is False:
+        try:
+            coordinates = input('Specify a coordinate').upper()
+            col = int(coordinates[1])-1
+
+            for i in range(len(valid_letters)):
+                if coordinates[0] == valid_letters[i]:
+                    row = i
+
+            if board[row][col] == 0 and 0 <= col < 4 and coordinates[0] in valid_letters:
+                next_move = True
+        except IndexError:
+            next_move = False
     return row, col
 
 
@@ -22,7 +37,8 @@ def get_ai_move(board, player):
 
 def mark(board, player, row, col):  # Bence
     """Marks the element at row & col on the board for player."""
-    pass
+    board[row][col] = player
+    return board
 
 
 def has_won(board, player):  # Bende
