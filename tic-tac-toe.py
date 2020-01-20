@@ -53,7 +53,19 @@ def is_full(board):
 
 def print_board(board):
     """Prints a 3-by-3 board on the screen with borders."""
-    pass
+    a = ""
+    abc = ["A ","B ","C "]
+    counter = 0
+
+    print("   1   2   3\n")
+    for i in board:
+        a += abc[counter]
+        for j in i:
+            a += f" {j} |"
+        a = a[:-2] + "\n  ---+---+---\n"
+        counter += 1
+    a = a.replace("0",".")[:-15]
+    print(a)
 
 
 def print_result(winner):
@@ -76,8 +88,7 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
 def main_menu():
     # tictactoe_game('HUMAN-HUMAN')
     board1 = init_board()
-    for i in board1:
-        print(*i)
+    print_board(board1)
 
 
 if __name__ == '__main__':
