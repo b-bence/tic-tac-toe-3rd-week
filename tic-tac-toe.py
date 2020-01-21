@@ -46,6 +46,7 @@ def mark(board, player, row, col):  # Bence
 
 def has_won(board, player):  # Bende
     """Returns True if player has won the game."""
+
     rArr = []
     lArr = []
     for i in range(len(board)):
@@ -59,18 +60,20 @@ def has_won(board, player):  # Bende
             if i + j == 2:
                 rArr.append(board[i][j])
 
-        # xORo(rowArr, "X")
-        # xORo(colArr, "X")
+        print_result(rowArr,board)
+        print_result(colArr,board)
 
         print(str(rowArr) + "     " + str(colArr))
         print()
-    print_result(lArr, "X")
-    print_result(rArr, "X")
+
+    print_result(lArr,board)  # bal atlo
+    print_result(rArr,board)  # jobb atlo
 
 
-def is_full(board): 
+def is_full():
     """Returns True if board is full."""
-    return False
+    print("The board is full - it is a draw")
+    exit()
 
 
 def print_board(board):
@@ -90,34 +93,50 @@ def print_board(board):
     print(a)
 
 
-def print_result(arrAy, player):
+def print_result(arrAy,board):
     """Congratulates winner or proclaims tie (if winner equals zero)."""
     if "0" not in arrAy:
         if "X" not in arrAy:
+            print_board(board)
             print("O Nyert!")
+            exit()
         elif "O" not in arrAy:
+            print_board(board)
             print("X Nyert!")
-
+            exit()
 
 def tictactoe_game(mode='HUMAN-HUMAN'):
     board = init_board()
+    player = 'X'
 
-    # use get_move(), mark(), has_won(), is_full(), and print_board() to create game logic
-    print_board(board)
-    row, col = get_move(board, 1)
-    mark(board, 1, row, col)
 
-    winner = 0
-    print_result(winner)
+    for i in range(9):
+        # use get_move(), mark(), has_won(), is_full(), and print_board() to create game logic
 
+        print_board(board)
+        row, col = get_move(board, player)
+        mark(board, player, row, col)
+
+        if i > 3:
+            has_won(board,player)
+
+
+        # print(is_full(board))
+
+        if player == 'X':
+            player = 'O'
+        else:
+            player = 'X'
+
+    is_full()
 
 def main_menu():
-    # tictactoe_game('HUMAN-HUMAN')
-    board1 = init_board()
-    print_board(board1)
-    row, col = get_move(board1, "X")
-    mark(board1, "X", row, col)
-    print_board(board1)
+    tictactoe_game('HUMAN-HUMAN')
+    # board1 = init_board()
+    # print_board(board1)
+    # row, col = get_move(board1, "X")
+    # mark(board1, "X", row, col)
+    # print_board(board1)
 
 
 if __name__ == '__main__':
