@@ -15,7 +15,7 @@ def get_move(board, player):  # Bence
     next_move = False
     while next_move is False:
         try:
-            coordinates = input('Specify a coordinate').upper()
+            coordinates = input('Specify a coordinate: ').upper()
             col = int(coordinates[1])-1
 
             for i in range(len(valid_letters)):
@@ -88,6 +88,9 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
 def main_menu():
     # tictactoe_game('HUMAN-HUMAN')
     board1 = init_board()
+    print_board(board1)
+    row, col = get_move(board1, "X")
+    mark(board1, "X", row, col)
     print_board(board1)
 
 
