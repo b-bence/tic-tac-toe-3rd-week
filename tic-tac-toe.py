@@ -92,6 +92,9 @@ def main_menu():
     # tictactoe_game('HUMAN-HUMAN')
     board1 = init_board()
     print_board(board1)
+    row, col = get_move(board1, "X")
+    mark(board1, "X", row, col)
+    print_board(board1)
 
 
 if __name__ == '__main__':
