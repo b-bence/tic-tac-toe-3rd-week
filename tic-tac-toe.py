@@ -40,13 +40,32 @@ def mark(board, player, row, col):  # Bence
     try:
         board[row][col] = player
     except:
-        continue
+        pass
     return board
 
 
 def has_won(board, player):  # Bende
     """Returns True if player has won the game."""
-    return False
+    rArr = []
+    lArr = []
+    for i in range(len(board)):
+        rowArr = []
+        colArr = []
+        lArr.append(board[i][i])
+
+        for j in range(len(board[i])):
+            rowArr.append(board[i][j])
+            colArr.append(board[j][i])
+            if i + j == 2:
+                rArr.append(board[i][j])
+
+        # xORo(rowArr, "X")
+        # xORo(colArr, "X")
+
+        print(str(rowArr) + "     " + str(colArr))
+        print()
+    print_result(lArr, "X")
+    print_result(rArr, "X")
 
 
 def is_full(board): 
@@ -57,7 +76,7 @@ def is_full(board):
 def print_board(board):
     """Prints a 3-by-3 board on the screen with borders."""
     a = ""
-    abc = ["A ","B ","C "]
+    abc = ["A ", "B ", "C "]
     counter = 0
 
     print("   1   2   3\n")
@@ -67,13 +86,17 @@ def print_board(board):
             a += f" {j} |"
         a = a[:-2] + "\n  ---+---+---\n"
         counter += 1
-    a = a.replace("0",".")[:-15]
+    a = a.replace("0", ".")[:-15]
     print(a)
 
 
-def print_result(winner):
+def print_result(arrAy, player):
     """Congratulates winner or proclaims tie (if winner equals zero)."""
-    pass
+    if "0" not in arrAy:
+        if "X" not in arrAy:
+            print("O Nyert!")
+        elif "O" not in arrAy:
+            print("X Nyert!")
 
 
 def tictactoe_game(mode='HUMAN-HUMAN'):
