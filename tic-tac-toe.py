@@ -16,6 +16,9 @@ def get_move(board, player):  # Bence
     while next_move is False:
         try:
             coordinates = input('Specify a coordinate: ').upper()
+            if coordinates == 'QUIT':
+                exit()
+
             col = int(coordinates[1])-1
 
             for i in range(len(valid_letters)):
@@ -24,7 +27,7 @@ def get_move(board, player):  # Bence
 
             if board[row][col] == 0 and 0 <= col < 4 and coordinates[0] in valid_letters:
                 next_move = True
-        except IndexError:
+        except (ValueError,IndexError):
             next_move = False
     return row, col
 
@@ -67,9 +70,10 @@ def has_won(board, player):  # Bende
     print_result(rArr,board)  # jobb atlo
 
 
-def is_full():
+def is_full(board):
     """Returns True if board is full."""
-    print("The board is full - it is a draw")
+    print_board(board)
+    print("It's a tie!")
     exit()
 
 
@@ -95,11 +99,11 @@ def print_result(arrAy,board):
     if 0 not in arrAy:
         if "X" not in arrAy:
             print_board(board)
-            print("O Nyert!")
+            print("O Won!")
             exit()
         elif "O" not in arrAy:
             print_board(board)
-            print("X Nyert!")
+            print("X Won!")
             exit()
 
 def tictactoe_game(mode='HUMAN-HUMAN'):
