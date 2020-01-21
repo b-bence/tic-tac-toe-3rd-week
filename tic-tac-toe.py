@@ -63,9 +63,6 @@ def has_won(board, player):  # Bende
         print_result(rowArr,board)
         print_result(colArr,board)
 
-        print(str(rowArr) + "     " + str(colArr))
-        print()
-
     print_result(lArr,board)  # bal atlo
     print_result(rArr,board)  # jobb atlo
 
@@ -95,7 +92,7 @@ def print_board(board):
 
 def print_result(arrAy,board):
     """Congratulates winner or proclaims tie (if winner equals zero)."""
-    if "0" not in arrAy:
+    if 0 not in arrAy:
         if "X" not in arrAy:
             print_board(board)
             print("O Nyert!")
