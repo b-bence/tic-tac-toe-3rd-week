@@ -15,7 +15,7 @@ def get_move(board, player):  # Bence
     next_move = False
     while next_move is False:
         try:
-            coordinates = input('Specify a coordinate').upper()
+            coordinates = input('Specify a coordinate: ').upper()
             col = int(coordinates[1])-1
 
             for i in range(len(valid_letters)):
@@ -37,7 +37,10 @@ def get_ai_move(board, player):
 
 def mark(board, player, row, col):  # Bence
     """Marks the element at row & col on the board for player."""
-    board[row][col] = player
+    try:
+        board[row][col] = player
+    except:
+        continue
     return board
 
 
