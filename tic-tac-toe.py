@@ -1,3 +1,5 @@
+from os import system
+
 def init_board():  # Bende
     """Returns an empty 3-by-3 board (with zeros)."""
     board = []
@@ -15,7 +17,9 @@ def get_move(board, player):  # Bence
     next_move = False
     while next_move is False:
         try:
-            coordinates = input('Specify a coordinate: ').upper()
+            coordinates = input(f'\n{player}: Specify a coordinate: ').upper()
+            system("clear")
+            print()
             if coordinates == 'QUIT':
                 exit()
 
@@ -27,8 +31,9 @@ def get_move(board, player):  # Bence
 
             if board[row][col] == 0 and 0 <= col < 4 and coordinates[0] in valid_letters:
                 next_move = True
-        except (ValueError,IndexError):
+        except (ValueError, IndexError):
             next_move = False
+            print_board(board)
     return row, col
 
 
@@ -40,10 +45,7 @@ def get_ai_move(board, player):
 
 def mark(board, player, row, col):  # Bence
     """Marks the element at row & col on the board for player."""
-    try:
-        board[row][col] = player
-    except:
-        pass
+    board[row][col] = player
     return board
 
 
@@ -63,17 +65,17 @@ def has_won(board, player):  # Bende
             if i + j == 2:
                 rArr.append(board[i][j])
 
-        print_result(rowArr,board)
-        print_result(colArr,board)
+        print_result(rowArr, board)
+        print_result(colArr, board)
 
-    print_result(lArr,board)  # bal atlo
-    print_result(rArr,board)  # jobb atlo
+    print_result(lArr, board)  # bal atlo
+    print_result(rArr, board)  # jobb atlo
 
 
 def is_full(board):
     """Returns True if board is full."""
     print_board(board)
-    print("It's a tie!")
+    print("\nIt's a tie!")
     exit()
 
 
@@ -94,7 +96,7 @@ def print_board(board):
     print(a)
 
 
-def print_result(arrAy,board):
+def print_result(arrAy, board):
     """Congratulates winner or proclaims tie (if winner equals zero)."""
     if 0 not in arrAy:
         if "X" not in arrAy:
@@ -106,10 +108,10 @@ def print_result(arrAy,board):
             print("X Won!")
             exit()
 
+
 def tictactoe_game(mode='HUMAN-HUMAN'):
     board = init_board()
     player = 'X'
-
 
     for i in range(9):
         # use get_move(), mark(), has_won(), is_full(), and print_board() to create game logic
@@ -119,8 +121,7 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
         mark(board, player, row, col)
 
         if i > 3:
-            has_won(board,player)
-
+            has_won(board, player)
 
         # print(is_full(board))
 
@@ -129,16 +130,11 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
         else:
             player = 'X'
 
-    is_full()
+    is_full(board)
+
 
 def main_menu():
     tictactoe_game('HUMAN-HUMAN')
-    # board1 = init_board()
-    # print_board(board1)
-    # row, col = get_move(board1, "X")
-    # mark(board1, "X", row, col)
-    # print_board(board1)
-
 
 if __name__ == '__main__':
     main_menu()
