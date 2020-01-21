@@ -1,4 +1,5 @@
 from os import system
+import random
 
 def init_board():  # Bende
     """Returns an empty 3-by-3 board (with zeros)."""
@@ -37,9 +38,17 @@ def get_move(board, player):  # Bence
     return row, col
 
 
-def get_ai_move(board, player):
+def get_ai_move(board):
     """Returns the coordinates of a valid move for player on board."""
+    system("clear")
     row, col = 0, 0
+    go = False
+    while go == False:
+        row = random.randrange(0,3)
+        col = random.randrange(0,3)
+        if board[row][col] == 0:
+            go = True
+
     return row, col
 
 
@@ -114,17 +123,23 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
     player = 'X'
 
     for i in range(9):
-        # use get_move(), mark(), has_won(), is_full(), and print_board() to create game logic
-
         print_board(board)
-        row, col = get_move(board, player)
+        if mode == 'HUMAN-HUMAN':
+            row, col = get_move(board, player)
+        elif mode == 'HUMAN-AI':
+            if i % 2 != 0:
+                row, col = get_ai_move(board)
+            elif i % 2 == 0:
+                row, col = get_move(board, player)
+        elif mode == 'AI-HUMAN':
+            if i % 2 == 0:
+                row, col = get_ai_move(board)
+            elif i % 2 != 0:
+                row, col = get_move(board, player)
+    
         mark(board, player, row, col)
-
         if i > 3:
-            has_won(board, player)
-
-        # print(is_full(board))
-
+            has_won(board,player)
         if player == 'X':
             player = 'O'
         else:
@@ -134,7 +149,7 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
 
 
 def main_menu():
-    tictactoe_game('HUMAN-HUMAN')
+    tictactoe_game('HUMAN-AI')
 
 if __name__ == '__main__':
     main_menu()
