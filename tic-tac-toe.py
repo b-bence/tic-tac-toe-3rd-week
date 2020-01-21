@@ -64,17 +64,15 @@ def has_won(board, player):  # Bende
     rArr = []
     lArr = []
     for i in range(len(board)):
-        rowArr = []
         colArr = []
         lArr.append(board[i][i])
 
         for j in range(len(board[i])):
-            rowArr.append(board[i][j])
             colArr.append(board[j][i])
             if i + j == 2:
                 rArr.append(board[i][j])
 
-        print_result(rowArr, board)
+        print_result(board[i], board)
         print_result(colArr, board)
 
     print_result(lArr, board)  # bal atlo
