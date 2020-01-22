@@ -1,6 +1,7 @@
 from os import system
 import random
 
+
 def init_board():  # Bende
     """Returns an empty 3-by-3 board (with zeros)."""
     board = []
@@ -20,7 +21,7 @@ def get_move(board, player):  # Bence
         try:
             coordinates = input(f'\n{player}: Specify a coordinate: ').upper()
             system("clear")
-            print()
+            print_board(board)
             if coordinates == 'QUIT':
                 exit()
 
@@ -34,6 +35,7 @@ def get_move(board, player):  # Bence
                 next_move = True
         except (ValueError, IndexError):
             next_move = False
+            system("clear")
             print_board(board)
     return row, col
 
@@ -43,9 +45,9 @@ def get_ai_move(board):
     system("clear")
     row, col = 0, 0
     go = False
-    while go == False:
-        row = random.randrange(0,3)
-        col = random.randrange(0,3)
+    while go is False:
+        row = random.randrange(0, 3)
+        col = random.randrange(0, 3)
         if board[row][col] == 0:
             go = True
 
@@ -106,13 +108,14 @@ def print_board(board):
 def print_result(arrAy, board):
     """Congratulates winner or proclaims tie (if winner equals zero)."""
     if 0 not in arrAy:
+        system("clear")
         if "X" not in arrAy:
             print_board(board)
-            print("O Won!")
+            print("\nO Won!")
             exit()
         elif "O" not in arrAy:
             print_board(board)
-            print("X Won!")
+            print("\nX Won!")
             exit()
 
 
@@ -121,6 +124,7 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
     player = 'X'
 
     for i in range(9):
+        system("clear")
         print_board(board)
         if mode == 'HUMAN-HUMAN':
             row, col = get_move(board, player)
@@ -134,10 +138,9 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
                 row, col = get_ai_move(board)
             elif i % 2 != 0:
                 row, col = get_move(board, player)
-    
         mark(board, player, row, col)
         if i > 3:
-            has_won(board,player)
+            has_won(board, player)
         if player == 'X':
             player = 'O'
         else:
@@ -147,7 +150,8 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
 
 
 def main_menu():
-    tictactoe_game('HUMAN-AI')
+    tictactoe_game('AI-HUMAN')
+
 
 if __name__ == '__main__':
     main_menu()
