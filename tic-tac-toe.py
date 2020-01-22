@@ -1,5 +1,6 @@
 from os import system
 import random
+import numpy as np
 
 
 def init_board():  # Bende
@@ -25,7 +26,7 @@ def get_move(board, player):  # Bence
             if coordinates == 'QUIT':
                 exit()
 
-            col = int(coordinates[1])-1
+            col = int(coordinates[1]) - 1
 
             for i in range(len(valid_letters)):
                 if coordinates[0] == valid_letters[i]:
@@ -118,28 +119,86 @@ def print_result(arrAy, board):
             print("\nX Won!")
             exit()
 
+def reverse_mark(player):
+    if player == 'X':
+        enemy = 'O'
+    else:
+        enemy = 'X'
+    return enemy
+
+def prevent_lose(board, player):
+    enemy = ''
+    row, col = get_ai_move(board)
+
+    enemy = reverse_mark(player)
+
+    # Horizontal
+    for list in range(3):
+        if board[list].count(0) == 1 and board[list].count(enemy) == 2:
+            col = board[list].index(0)
+            row = list
+
+    board_t = np.array(board).transpose()
+    board = board_t.tolist()
+
+    # Vertical
+    for list in range(3):
+        if board[list].count('0') == 1 and board[list].count(enemy) == 2:
+            row = board[list].index('0')
+            col = list
+
+    # Main diagonal
+    board_diag = np.array(board).diagonal()
+    board_diag = board_diag.tolist()
+    if board_diag.count('0') == 1 and board_diag.count(enemy) == 2:
+        col = board_diag.index('0')
+        row = board_diag.index('0')
+
+    # Second diagonal
+    board_diag = np.array(board)
+    board_diag = np.fliplr(board_t).diagonal()
+    board_diag = board_diag.tolist()
+    if board_diag.count('0') == 1 and board_diag.count(enemy) == 2:
+        col = board_diag.index('0')
+        row = 2 - col
+
+    return row, col
+
 
 def tictactoe_game(mode='HUMAN-HUMAN'):
     board = init_board()
     player = 'X'
 
-    for i in range(9):
+    for turn in range(9):
         system("clear")
         print_board(board)
         if mode == 'HUMAN-HUMAN':
             row, col = get_move(board, player)
         elif mode == 'HUMAN-AI':
-            if i % 2 != 0:
+            if turn % 2 != 0:
                 row, col = get_ai_move(board)
-            elif i % 2 == 0:
+            elif turn % 2 == 0:
                 row, col = get_move(board, player)
         elif mode == 'AI-HUMAN':
-            if i % 2 == 0:
+            if turn % 2 == 0:
                 row, col = get_ai_move(board)
-            elif i % 2 != 0:
+            elif turn % 2 != 0:
                 row, col = get_move(board, player)
+        elif mode == 'prevent':
+            if turn % 2 != 0:
+                row, col = prevent_lose(board, player)
+            elif turn % 2 == 0:
+                row, col = get_move(board, player)
+        elif mode == 'easy-win':
+            if turn % 2 != 0:
+                player = reverse_mark(player)
+                row, col = prevent_lose(board, player)
+                player =reverse_mark(player)
+            elif turn % 2 == 0:
+                row, col = get_move(board, player)
+
         mark(board, player, row, col)
-        if i > 3:
+        if turn > 3:
             has_won(board, player)
         if player == 'X':
             player = 'O'
@@ -150,7 +209,7 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
 
 
 def main_menu():
-    tictactoe_game('AI-HUMAN')
+    tictactoe_game('prevent')
 
 
 if __name__ == '__main__':
