@@ -128,42 +128,55 @@ def reverse_mark(player):
 
 def prevent_lose(board, player):
     enemy = ''
-    row, col = get_ai_move(board)
-
+    row, col = -1, -1
+    cont = False
     enemy = reverse_mark(player)
+    next_move = 1
+    while cont == False:
+        # Horizontal
+        for list in range(3):
+            if board[list].count(0) == 1 and board[list].count(enemy) == 2:
+                col = board[list].index(0)
+                row = list
+                cont = True
 
-    # Horizontal
-    for list in range(3):
-        if board[list].count(0) == 1 and board[list].count(enemy) == 2:
-            col = board[list].index(0)
-            row = list
+        board_t = np.array(board).transpose()
+        board_t = board_t.tolist()
 
-    board_t = np.array(board).transpose()
-    board = board_t.tolist()
+        # Vertical
+        for list in range(3):
+            if board_t[list].count('0') == 1 and board_t[list].count(enemy) == 2:
+                row = board_t[list].index('0')
+                col = list
+                cont = True
 
-    # Vertical
-    for list in range(3):
-        if board[list].count('0') == 1 and board[list].count(enemy) == 2:
-            row = board[list].index('0')
-            col = list
+        # Main diagonal
+        board_diag = np.array(board).diagonal()
+        board_diag = board_diag.tolist()
+        if board_diag.count('0') == 1 and board_diag.count(enemy) == 2:
+            col = board_diag.index('0')
+            row = board_diag.index('0')
+            cont = True
 
-    # Main diagonal
-    board_diag = np.array(board).diagonal()
-    board_diag = board_diag.tolist()
-    if board_diag.count('0') == 1 and board_diag.count(enemy) == 2:
-        col = board_diag.index('0')
-        row = board_diag.index('0')
+        # Second diagonal
+        board_diag = np.array(board)
+        board_diag = np.fliplr(board_t).diagonal()
+        board_diag = board_diag.tolist()
+        if board_diag.count('0') == 1 and board_diag.count(enemy) == 2:
+            col = board_diag.index('0')
+            row = 2 - col
+            cont = True
 
-    # Second diagonal
-    board_diag = np.array(board)
-    board_diag = np.fliplr(board_t).diagonal()
-    board_diag = board_diag.tolist()
-    if board_diag.count('0') == 1 and board_diag.count(enemy) == 2:
-        col = board_diag.index('0')
-        row = 2 - col
+        next_move += 1
+        print(next_move)
+        if cont == False and next_move == 2:
+            enemy = reverse_mark(enemy)
+
+        if cont == False and next_move == 3:
+            row, col = get_ai_move(board)
+            cont = True
 
     return row, col
-
 
 def tictactoe_game(mode='HUMAN-HUMAN'):
     board = init_board()
@@ -184,12 +197,7 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
                 row, col = get_ai_move(board)
             elif turn % 2 != 0:
                 row, col = get_move(board, player)
-        elif mode == 'prevent':
-            if turn % 2 != 0:
-                row, col = prevent_lose(board, player)
-            elif turn % 2 == 0:
-                row, col = get_move(board, player)
-        elif mode == 'easy-win':
+        elif mode == 'hard-mode':
             if turn % 2 != 0:
                 player = reverse_mark(player)
                 row, col = prevent_lose(board, player)
@@ -209,7 +217,7 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
 
 
 def main_menu():
-    tictactoe_game('prevent')
+    tictactoe_game('hard-mode')
 
 
 if __name__ == '__main__':
