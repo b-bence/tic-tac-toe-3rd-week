@@ -43,7 +43,7 @@ def get_move(board, player):  # Bence
 
 def get_ai_move(board):
     """Returns the coordinates of a valid move for player on board."""
-    system("clear")
+    # system("clear")
     row, col = 0, 0
     go = False
     while go is False:
@@ -120,47 +120,30 @@ def print_result(arrAy, board):
             exit()
 
 
-def reverse_mark(player):
-    if player == 'X':
-        enemy = 'O'
-    else:
-        enemy = 'X'
-    return enemy
+def prevent_lose(aiArray, enemy):
+    leftDiag = np.array(aiArray).diagonal().tolist()
+    rightDiag = np.fliplr(np.array(aiArray)).diagonal().tolist()
+    aiArray2 = np.array(aiArray).transpose().tolist()
+    row = None
+    col = None
 
-
-def advanced_ai(board, player):
-    row, col = None, None
-
-    board_t = np.array(board).transpose()
-    board_t = board_t.tolist()
-
-    board_diag_main = np.array(board).diagonal().tolist()
-
-    board_diag = np.array(board)
-    board_diag = np.flipud(board_diag).diagonal().tolist()
-
-    for i in range(len(board)):
-        if board[i].count(0) == 1 and board[i].count(player) == 2:  # Horizontal
-            col = board[i].index(0)
+    for i in range(len(aiArray)):
+        if 0 in aiArray[i] and aiArray[i].count(enemy) > 1:
+            col = aiArray[i].index(0)
             row = i
             break
-
-        elif board_t[i].count('0') == 1 and board_t[i].count(player) == 2:  # Vertical
-            row = board_t[i].index('0')
+        elif '0' in aiArray2[i] and aiArray2[i].count(enemy) > 1:
+            row = aiArray2[i].index('0')
             col = i
             break
-
-        elif i < len(board)-1:
+        elif i < len(aiArray)-1:
             continue
-        elif board_diag_main.count('0') == 1 and board_diag_main.count(player) == 2:  # Main diagonal
-            col = board_diag_main.index('0')
-            row = board_diag_main.index('0')
-            break
-
-        elif board_diag.count('0') == 1 and board_diag.count(player) == 2:  # Second diagonal
-            col = board_diag.index('0')
-            row = 2 - col
-            break
+        if '0' in leftDiag and leftDiag.count(enemy) > 1:
+            row = leftDiag.index('0')
+            col = row
+        elif '0' in rightDiag and rightDiag.count(enemy) > 1:
+            row = rightDiag.index('0')
+            col = 2 - row
 
     return row, col
 
@@ -168,6 +151,7 @@ def advanced_ai(board, player):
 def tictactoe_game(mode='HUMAN-HUMAN'):
     board = init_board()
     player = 'X'
+    enemy = 'O'
 
     for turn in range(9):
         system("clear")
@@ -185,24 +169,25 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
             elif turn % 2 != 0:
                 row, col = get_move(board, player)
         elif mode == 'hard-mode':
-            if turn % 2 != 0:  # AI attempts to win
-                row, col = advanced_ai(board, player)
-
-            if turn % 2 != 0 and row is None:  # AI prevents win
-                row, col = advanced_ai(board, reverse_mark(player))
-
-            if turn % 2 != 0 and row is None:  # random move
-                row, col = get_ai_move(board)
-
-            elif turn % 2 == 0:  # Player turn
+            if turn % 2 != 0:
+                row, col = prevent_lose(board, player)
+                if row is None:
+                    row, col = prevent_lose(board, enemy)
+                    if row is None:
+                        row, col = get_ai_move(board)
+            elif turn % 2 == 0:
                 row, col = get_move(board, player)
 
         mark(board, player, row, col)
-
         if turn > 3:
             has_won(board, player)
+        if player == 'X':
+            player = 'O'
+            enemy = 'X'
+        else:
+            player = 'X'
+            enemy = 'O'
 
-        player = reverse_mark(player)
     is_full(board)
 
 
