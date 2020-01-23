@@ -1,6 +1,7 @@
 from os import system
 import random
 import numpy as np
+import time
 
 
 def init_board():  # Bende
@@ -165,26 +166,31 @@ def advanced_ai(board, player):
     return row, col
 
 
-def tictactoe_game(mode='HUMAN-HUMAN'):
+def tictactoe_game(mode='1'):
     board = init_board()
     player = 'X'
 
     for turn in range(9):
         system("clear")
         print_board(board)
-        if mode == 'HUMAN-HUMAN':
+
+        if mode == '1':  # HUMAN-HUMAN
             row, col = get_move(board, player)
-        elif mode == 'HUMAN-AI':
-            if turn % 2 != 0:
+
+        elif mode == '2':  # AI-HUMAN
+            if turn % 2 == 0:  # AI attempts to win
+                row, col = advanced_ai(board, player)
+
+            if turn % 2 == 0 and row is None:  # AI prevents win
+                row, col = advanced_ai(board, reverse_mark(player))
+
+            if turn % 2 == 0 and row is None:  # random move
                 row, col = get_ai_move(board)
-            elif turn % 2 == 0:
+
+            elif turn % 2 != 0:  # Player turn
                 row, col = get_move(board, player)
-        elif mode == 'AI-HUMAN':
-            if turn % 2 == 0:
-                row, col = get_ai_move(board)
-            elif turn % 2 != 0:
-                row, col = get_move(board, player)
-        elif mode == 'hard-mode':
+
+        elif mode == '3':  # HUMAN-AI
             if turn % 2 != 0:  # AI attempts to win
                 row, col = advanced_ai(board, player)
 
@@ -197,6 +203,18 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
             elif turn % 2 == 0:  # Player turn
                 row, col = get_move(board, player)
 
+        elif mode == '4':  # AI-AI
+            row, col = advanced_ai(board, player)
+
+            if row is None:
+                row, col = advanced_ai(board, reverse_mark(player))
+
+            if row is None:
+                row, col = get_ai_move(board)
+            system("clear")
+            print_board(board)
+            time.sleep(1)
+
         mark(board, player, row, col)
 
         if turn > 3:
@@ -207,7 +225,14 @@ def tictactoe_game(mode='HUMAN-HUMAN'):
 
 
 def main_menu():
-    tictactoe_game('hard-mode')
+    print('\nPress 1: Human vs. Human')
+    print('Press 2: AI vs. Human')
+    print('Press 3: Human vs. AI')
+    print('Press 4: AI vs. AI')
+
+    mode = input("\nChoose play mode: ")
+
+    tictactoe_game(mode)
 
 
 if __name__ == '__main__':
