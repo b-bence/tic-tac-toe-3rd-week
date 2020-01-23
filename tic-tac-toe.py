@@ -137,22 +137,28 @@ def advanced_ai(board, player):
     board_diag = np.array(board)
     board_diag = np.flipud(board_diag).diagonal().tolist()
 
-    for list in range(3):
-        if board[list].count(0) == 1 and board[list].count(player) == 2: # Horizontal
-            col = board[list].index(0)
-            row = list
+    for i in range(len(board)):
+        if board[i].count(0) == 1 and board[i].count(player) == 2: # Horizontal
+            col = board[i].index(0)
+            row = i
+            break
 
-        elif board_t[list].count('0') == 1 and board_t[list].count(player) == 2: # Vertical
-            row = board_t[list].index('0')
-            col = list
+        elif board_t[i].count('0') == 1 and board_t[i].count(player) == 2: # Vertical
+            row = board_t[i].index('0')
+            col = i
+            break
 
+        elif i < len(board)-1:
+            continue
         elif board_diag_main.count('0') == 1 and board_diag_main.count(player) == 2:  # Main diagonal
             col = board_diag_main.index('0')
             row = board_diag_main.index('0')
+            break
 
         elif board_diag.count('0') == 1 and board_diag.count(player) == 2:  # Second diagonal
             col = board_diag.index('0')
             row = 2 - col
+            break
 
     return row, col
 
