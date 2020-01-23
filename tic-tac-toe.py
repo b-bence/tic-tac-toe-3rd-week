@@ -225,13 +225,19 @@ def tictactoe_game(mode='1'):
 
 
 def main_menu():
-    print('\nPress 1: Human vs. Human')
-    print('Press 2: AI vs. Human')
-    print('Press 3: Human vs. AI')
-    print('Press 4: AI vs. AI')
+    system("clear")
+    modes = ['1', '2', '3', '4', 'quit']
+    mode = ''
+    while mode not in modes:
+        print('\nPress 1: Human vs. Human')
+        print('Press 2: AI vs. Human')
+        print('Press 3: Human vs. AI')
+        print('Press 4: AI vs. AI')
+        mode = input("\nChoose play mode: ")
+        system("clear")
 
-    mode = input("\nChoose play mode: ")
-
+    if mode == 'quit':
+        exit()
     tictactoe_game(mode)
 
 
